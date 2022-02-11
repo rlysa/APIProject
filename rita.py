@@ -4,13 +4,13 @@ import requests
 from PIL import Image
 
 
-def get_spn(toponym):
+def get_spn(toponym, scale):
     frame = toponym['boundedBy']['Envelope']
     l, b = map(float, frame['lowerCorner'].split())
     u, a = map(float, frame['upperCorner'].split())
 
-    x = abs(l - u) / 4
-    y = abs(a - b) / 4
+    x = abs(l - u) / scale
+    y = abs(a - b) / scale
 
     return f'{x},{y}'
 
@@ -24,7 +24,7 @@ def get_layer(layer):
         return 'sat,skl'
 
 
-def address(toponym_to_find, layer):
+def address(toponym_to_find, scale, layer):
     toponym_to_find = toponym_to_find
     geocoder_api_server = 'http://geocode-maps.yandex.ru/1.x/'
     geocoder_params = {
@@ -44,7 +44,7 @@ def address(toponym_to_find, layer):
 
     map_params = {
         'll': ','.join([toponym_longitude, toponym_lattitude]),
-        'spn': get_spn(toponym),
+        'spn': get_spn(toponym, scale),
         'l': get_layer(layer)
     }
     map_api_server = 'http://static-maps.yandex.ru/1.x/'
@@ -54,5 +54,5 @@ def address(toponym_to_find, layer):
 
 
 if __name__ == '__main__':
-    ad = address('Москва, ерервинский бульвар, 14, к1', 'спутник')
+    ad = address('Перервинский бульвар, 10, к1', 3, 'гибрид')
     Image.open(BytesIO(ad)).show()
