@@ -15,7 +15,16 @@ def get_spn(toponym):
     return f'{x},{y}'
 
 
-def address(toponym_to_find):
+def get_layer(layer):
+    if layer == 'схема':
+        return 'map'
+    elif layer == 'спутник':
+        return 'sat'
+    elif layer == 'гибрид':
+        return 'sat,skl'
+
+
+def address(toponym_to_find, layer):
     toponym_to_find = toponym_to_find
     geocoder_api_server = 'http://geocode-maps.yandex.ru/1.x/'
     geocoder_params = {
@@ -36,7 +45,7 @@ def address(toponym_to_find):
     map_params = {
         'll': ','.join([toponym_longitude, toponym_lattitude]),
         'spn': get_spn(toponym),
-        'l': 'map'
+        'l': get_layer(layer)
     }
     map_api_server = 'http://static-maps.yandex.ru/1.x/'
     response = requests.get(map_api_server, params=map_params)
@@ -45,5 +54,5 @@ def address(toponym_to_find):
 
 
 if __name__ == '__main__':
-    ad = address('Москва, ерервинский бульвар, 14, к1')
+    ad = address('Москва, ерервинский бульвар, 14, к1', 'спутник')
     Image.open(BytesIO(ad)).show()
