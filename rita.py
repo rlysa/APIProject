@@ -24,7 +24,7 @@ def get_layer(layer):
         return 'sat,skl'
 
 
-def address(toponym_to_find, scale, layer):
+def address(toponym_to_find, layer, scale=3):
     toponym_to_find = toponym_to_find
     geocoder_api_server = 'http://geocode-maps.yandex.ru/1.x/'
     geocoder_params = {
@@ -54,5 +54,5 @@ def address(toponym_to_find, scale, layer):
 
 
 if __name__ == '__main__':
-    ad = address('Перервинский бульвар, 10, к1', 3, 'гибрид')
+    ad = address('Перервинский бульвар, 10, к1', 'гибрид')
     Image.open(BytesIO(ad)).show()
