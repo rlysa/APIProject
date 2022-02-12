@@ -18,6 +18,7 @@ class MyWidget(QMainWindow):
         self.searchBtn.clicked.connect(lambda checked, arg=True: self.run(arg))
         self.comboBox.currentTextChanged.connect(lambda checked, arg=False: self.run(arg))
         self.indexButton.clicked.connect(self.set_index)
+        self.resetBtn.clicked.connect(self.reset)
 
     def run(self, default_scale=True):
         if default_scale:
@@ -33,9 +34,7 @@ class MyWidget(QMainWindow):
         self.inputLineEdit.setFocus()
 
     def reset(self):
-        self.inputLineEdit.setText('')
-        self.comboBox.setCurrentIndex(0)
-        self.run(True)
+        self.fullAddressLine.setText('')
 
     def set_img(self, img_name):
         pixmap = QPixmap(img_name)
@@ -43,7 +42,7 @@ class MyWidget(QMainWindow):
 
     def set_index(self):
         self.index = False if self.index else True
-        self.run()
+        self.run(False)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_PageUp:
