@@ -1,7 +1,4 @@
-import sys
-from io import BytesIO
 import requests
-from PIL import Image
 
 
 def get_spn(toponym, scale):
@@ -24,8 +21,7 @@ def get_layer(layer):
         return 'sat,skl'
 
 
-def address(toponym_to_find, layer, scale=3):
-    toponym_to_find = toponym_to_find
+def address(toponym_to_find, layer='схема', scale=3):
     geocoder_api_server = 'http://geocode-maps.yandex.ru/1.x/'
     geocoder_params = {
         'apikey': '40d1649f-0493-4b70-98ba-98533de7710b',
@@ -51,8 +47,3 @@ def address(toponym_to_find, layer, scale=3):
     response = requests.get(map_api_server, params=map_params)
 
     return response.content
-
-
-if __name__ == '__main__':
-    ad = address('Перервинский бульвар, 10, к1', 'гибрид')
-    Image.open(BytesIO(ad)).show()

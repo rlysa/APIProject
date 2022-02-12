@@ -11,14 +11,18 @@ class MyWidget(QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi('templates/MainWindow.ui', self)
-        self.set_img('data/yandex_maps')
+        self.search_by_default = 'Москва'
+        self.run()
         self.searchBtn.clicked.connect(self.run)
 
     def run(self):
         search = self.inputLineEdit.text()
+        if search == '':
+            search = self.search_by_default
+        self.search_by_default = search
         layer = self.comboBox.currentText()
         img_name = 'map_img.png'
-        img = Image.open(BytesIO(address(search, layer.lower())))
+        img = Image.open(BytesIO(address(search, layer.lower(),)))
         img.save(img_name)
         self.set_img(img_name)
 
