@@ -30,6 +30,12 @@ class MyWidget(QMainWindow):
         self.fullAddressLine.setText(from_address[1])
         img.save(img_name)
         self.set_img(img_name)
+        self.inputLineEdit.setFocus()
+
+    def reset(self):
+        self.inputLineEdit.setText('')
+        self.comboBox.setCurrentIndex(0)
+        self.run(True)
 
     def set_img(self, img_name):
         pixmap = QPixmap(img_name)
