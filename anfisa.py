@@ -13,9 +13,11 @@ class MyWidget(QMainWindow):
         super().__init__()
         uic.loadUi('templates/MainWindow.ui', self)
         self.scale = 3  # [0.1;7] (вообще ещё есть варианты 14 и 28, но только для схемы, т.ч. наверно нам они не нужны)
+        self.index = False
         self.run()
         self.searchBtn.clicked.connect(lambda checked, arg=True: self.run(arg))
         self.comboBox.currentTextChanged.connect(lambda checked, arg=False: self.run(arg))
+        self.indexButton.clicked.connect(self.set_index)
 
     def run(self, default_scale=True):
         if default_scale:
@@ -23,7 +25,7 @@ class MyWidget(QMainWindow):
         search = self.inputLineEdit.text() if self.inputLineEdit.text() else 'Москва'
         layer = self.comboBox.currentText()
         img_name = 'map_img.png'
-        from_address = address(search, layer.lower(), self.scale)
+        from_address = address(search, layer.lower(), self.scale, self.index)
         img = Image.open(BytesIO(from_address[0]))
         self.fullAddressLine.setText(from_address[1])
         img.save(img_name)
@@ -32,6 +34,10 @@ class MyWidget(QMainWindow):
     def set_img(self, img_name):
         pixmap = QPixmap(img_name)
         self.mapLabel.setPixmap(pixmap)
+
+    def set_index(self):
+        self.index = False if self.index else True
+        self.run()
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_PageUp:
