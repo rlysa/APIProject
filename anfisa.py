@@ -23,7 +23,9 @@ class MyWidget(QMainWindow):
         search = self.inputLineEdit.text() if self.inputLineEdit.text() else 'Москва'
         layer = self.comboBox.currentText()
         img_name = 'map_img.png'
-        img = Image.open(BytesIO(address(search, layer.lower(), self.scale)))
+        from_address = address(search, layer.lower(), self.scale)
+        img = Image.open(BytesIO(from_address[0]))
+        self.fullAddressLine.setText(from_address[1])
         img.save(img_name)
         self.set_img(img_name)
 
