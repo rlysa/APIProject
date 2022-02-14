@@ -21,7 +21,7 @@ def get_layer(layer):
         return 'sat,skl'
 
 
-def address(toponym_to_find, layer='схема', scale=3, index=False):
+def address(toponym_to_find, layer='схема', scale=3, index=False, reset=True):
     geocoder_api_server = 'http://geocode-maps.yandex.ru/1.x/'
     geocoder_params = {
         'apikey': '40d1649f-0493-4b70-98ba-98533de7710b',
@@ -43,7 +43,7 @@ def address(toponym_to_find, layer='схема', scale=3, index=False):
         'spn': get_spn(toponym, scale),
         'l': get_layer(layer),
     }
-    if toponym_to_find != 'Москва':
+    if toponym_to_find != 'Москва' and reset:
         map_params['pt'] = ','.join([toponym_longitude, toponym_lattitude])
     map_api_server = 'http://static-maps.yandex.ru/1.x/'
     response = requests.get(map_api_server, params=map_params)
