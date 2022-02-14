@@ -42,8 +42,9 @@ def address(toponym_to_find, layer='схема', scale=3, index=False):
         'll': ','.join([toponym_longitude, toponym_lattitude]),
         'spn': get_spn(toponym, scale),
         'l': get_layer(layer),
-        'pt': ','.join([toponym_longitude, toponym_lattitude])
     }
+    if toponym_to_find != 'Москва':
+        map_params['pt'] = ','.join([toponym_longitude, toponym_lattitude])
     map_api_server = 'http://static-maps.yandex.ru/1.x/'
     response = requests.get(map_api_server, params=map_params)
 
