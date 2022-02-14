@@ -20,21 +20,23 @@ class MyWidget(QMainWindow):
         self.indexButton.clicked.connect(self.set_index)
         self.resetBtn.clicked.connect(self.reset)
 
-    def run(self, default_scale=True):
+    def run(self, default_scale=True, reset=True):
         if default_scale:
             self.scale = 3
         search = self.inputLineEdit.text() if self.inputLineEdit.text() else 'Москва'
         layer = self.comboBox.currentText()
         img_name = 'map_img.png'
-        from_address = address(search, layer.lower(), self.scale, self.index)
+        from_address = address(search, layer.lower(), self.scale, self.index, reset)
         img = Image.open(BytesIO(from_address[0]))
-        self.fullAddressLine.setText(from_address[1])
+        if reset:
+            self.fullAddressLine.setText(from_address[1])
         img.save(img_name)
         self.set_img(img_name)
         self.inputLineEdit.setFocus()
 
     def reset(self):
         self.fullAddressLine.setText('')
+        self.run(False, False)
 
     def set_img(self, img_name):
         pixmap = QPixmap(img_name)
